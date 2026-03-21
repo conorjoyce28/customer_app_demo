@@ -530,15 +530,48 @@
 <div class="guide-overlay open" id="guideOverlay">
   <div class="guide-card">
     <h1>Get Started Prototype</h1>
-    <div class="guide-sub">Wayflyer onboarding experience — from application submission to first drawdown.</div>
+    <div class="guide-sub">The customer journey from application submission to first drawdown, and beyond.</div>
+    <div style="font-size:11px;color:var(--content-warning);background:var(--bg-status-warning);padding:6px 10px;border-radius:6px;margin-bottom:20px">* Ignore specific copy throughout. Focus on flows, resolution patterns, and structure.</div>
 
     <div class="guide-section">
-      <h3>What this covers</h3>
-      <p style="font-size:13px;color:var(--content-strong);line-height:1.6;margin-bottom:8px">
-        The complete customer journey through the <strong>Get Started</strong> page: submitting an application,
-        completing account setup (KYC), handling AIRs and DQs, receiving offers, and the post-onboarding funded state with tasks.
-      </p>
+      <h3>What we're changing</h3>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;line-height:1.5">
+        <div style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--content-accent);font-weight:700;flex-shrink:0">1.</span><span><strong>All task resolution happens in the side panel.</strong> Every AIR, DQ, and post-onboarding task is resolvable without leaving the current page. Three primitives: <em>connect, upload, text response</em>.</span></div>
+        <div style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--content-accent);font-weight:700;flex-shrink:0">2.</span><span><strong>KYC populates Company Details.</strong> Account setup flows into the Company Details tab. Once complete, fields lock; changes require support as they may trigger re-review.</span></div>
+        <div style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--content-accent);font-weight:700;flex-shrink:0">3.</span><span><strong>Connections & Data shows upload status.</strong> File uploads live under their category (banking, sales, etc.) with validity and expiry indicators. No more files disappearing into the abyss.</span></div>
+        <div style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--content-accent);font-weight:700;flex-shrink:0">4.</span><span><strong>Get Started becomes Overview post-funding.</strong> After first drawdown, the nav restructures to Overview / Banking / Financing / Connections & Data. Tasks move to a top-right icon, still resolved via side panels.</span></div>
+        <div style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--content-accent);font-weight:700;flex-shrink:0">5.</span><span><strong>Banking upsell opportunity.</strong> The Banking tab prompts KYC completion as a gateway to a Wayflyer bank account, giving us always-fresh data.</span></div>
+        <div style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--content-accent);font-weight:700;flex-shrink:0">6.</span><span><strong>Referrals visible throughout.</strong> Earn $1,000 per referral via a shareable link, accessible from the nav at all times.</span></div>
+      </div>
     </div>
+
+    <div class="guide-divider"></div>
+
+    <div class="guide-section">
+      <h3>Task resolution types</h3>
+      <p style="font-size:12px;color:var(--content-subtle);margin-bottom:10px">Every task resolves to one of three actions: <strong>connect</strong> a data source, <strong>upload</strong> a file, or <strong>respond</strong> via text. Use the "Task panel" dropdown in the scenario bar to demo each type.</p>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="border:1px solid var(--border-subtle);border-radius:10px;padding:12px 14px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:4px">Customer App AIR <span style="font-weight:400;color:var(--content-subtle)">— Connect</span></div>
+          <div style="font-size:12px;color:var(--content-subtle);line-height:1.5">Fully built in-app resolution in the side panel. These already exist on the review page today; we're moving them into the side panel for consistency. The customer resolves everything without leaving Get Started.</div>
+        </div>
+        <div style="border:1px solid var(--border-subtle);border-radius:10px;padding:12px 14px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:4px">Staff AIR <span style="font-weight:400;color:var(--content-subtle)">— Connect / Upload</span></div>
+          <div style="font-size:12px;color:var(--content-subtle);line-height:1.5">Previously email-only. Now the email template content lives in-app: we spell out the connection requirements, link to Connections & Data, and provide a support fallback. Goal: migrate these toward full Customer App AIRs over time.</div>
+        </div>
+        <div style="border:1px solid var(--border-subtle);border-radius:10px;padding:12px 14px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:4px">KYC AIR <span style="font-weight:400;color:var(--content-subtle)">— Upload</span></div>
+          <div style="font-size:12px;color:var(--content-subtle);line-height:1.5">Document mismatch identified during review. Customer uploads a corrected file directly in the side panel.</div>
+        </div>
+        <div style="border:1px solid var(--border-subtle);border-radius:10px;padding:12px 14px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:4px">Underwriting DQ <span style="font-weight:400;color:var(--content-subtle)">— Text response</span></div>
+          <div style="font-size:12px;color:var(--content-subtle);line-height:1.5">Specific question from the review team. Customer types a response and optionally attaches a supporting document.</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:11px"><a href="https://www.figma.com/design/DHJatPi0s3NnvTsONI5f13/Onboarding?node-id=7038-36588" target="_blank" style="color:var(--content-accent);text-decoration:none;font-weight:500">View current experience in Figma ↗</a></div>
+    </div>
+
+    <div class="guide-divider"></div>
 
     <div class="guide-section">
       <h3>Customer scenarios</h3>
@@ -560,17 +593,9 @@
     <div class="guide-section">
       <h3>How to navigate</h3>
       <div class="guide-row"><div class="guide-key">Scenario bar</div><div class="guide-desc">The black bar at the top lets you jump between scenarios, pages, and open task panel demos.</div></div>
-      <div class="guide-row"><div class="guide-key">Flow buttons ▸</div><div class="guide-desc">Inside each page, dark buttons at the bottom let you progress naturally through the journey (e.g. "AIR arrives ▸").</div></div>
+      <div class="guide-row"><div class="guide-key">Flow buttons ▸</div><div class="guide-desc">Inside each page, dark buttons at the bottom let you progress naturally through the journey.</div></div>
       <div class="guide-row"><div class="guide-key">↻ Restart</div><div class="guide-desc">Resets to the application submitted interstitial and replays the full flow.</div></div>
       <div class="guide-row"><div class="guide-key">Esc</div><div class="guide-desc">Closes any open panel, modal, or this guide.</div></div>
-    </div>
-
-    <div class="guide-section">
-      <h3>4 task resolution types</h3>
-      <div class="guide-row"><div class="guide-key">Customer App AIR</div><div class="guide-desc">Full in-app resolution. Customer connects a platform or takes action directly in a side panel (e.g. eCommerce connection).</div></div>
-      <div class="guide-row"><div class="guide-key">Staff AIR</div><div class="guide-desc">Banking data shortfall. Shows requirements and links to Connections & Data to provide data.</div></div>
-      <div class="guide-row"><div class="guide-key">KYC AIR</div><div class="guide-desc">Document mismatch. Customer uploads a corrected file (e.g. Certificate of Incorporation).</div></div>
-      <div class="guide-row"><div class="guide-key">Underwriting DQ</div><div class="guide-desc">Specific question from review team. Customer types a text response and optionally attaches a document.</div></div>
     </div>
 
     <div class="guide-footer">
