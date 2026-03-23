@@ -522,6 +522,97 @@
       font-family: var(--font);
     }
     .guide-close-btn:hover { opacity: 0.9; }
+
+    /* ── Cross-sell Widget ── */
+    .cross-sell-widget {
+      margin-top: 20px; padding: 20px 24px;
+      border: 1px solid var(--border-subtle); border-radius: var(--radius-xl);
+      background: linear-gradient(135deg, rgba(0,30,255,0.02), rgba(0,218,254,0.02));
+    }
+    .cross-sell-header {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;
+    }
+    .cross-sell-label {
+      font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+      color: var(--content-accent);
+    }
+    .cross-sell-dismiss {
+      background: none; border: none; font-size: 18px; color: var(--content-subtle);
+      cursor: pointer; padding: 0; line-height: 1;
+    }
+    .cross-sell-dismiss:hover { color: var(--content-strong); }
+    .cross-sell-body {
+      font-size: 13px; color: var(--content-subtle); line-height: 1.4; margin-bottom: 16px;
+    }
+    .cross-sell-cards { display: flex; flex-direction: column; gap: 8px; }
+    .cross-sell-card {
+      display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+      border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);
+      background: white; cursor: pointer; transition: border-color 0.15s;
+    }
+    .cross-sell-card:hover { border-color: var(--content-accent); }
+    .cross-sell-icon {
+      width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cross-sell-card-text { flex: 1; }
+    .cross-sell-card-text h4 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+    .cross-sell-card-text p { font-size: 12px; color: var(--content-subtle); margin: 0; }
+
+    /* ── Persistent Survey Widgets ── */
+    .persistent-widgets {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+      margin-top: 24px; padding-bottom: 24px;
+    }
+    .survey-widget {
+      border: 1px solid var(--border-subtle); border-radius: var(--radius-xl);
+      padding: 20px; background: white;
+    }
+    .survey-header h4 {
+      font-size: 14px; font-weight: 600; margin-bottom: 14px;
+    }
+    .survey-options { display: flex; flex-direction: column; gap: 6px; }
+    .survey-option {
+      display: block; width: 100%; text-align: left; padding: 10px 14px;
+      border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
+      background: white; font-size: 13px; color: var(--content-strong);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .survey-option:hover { border-color: var(--content-accent); background: var(--bg-accent-subtle); }
+    .survey-option.selected {
+      border-color: var(--content-accent); background: var(--bg-accent-subtle);
+      color: var(--content-accent); font-weight: 500;
+    }
+    .survey-confirmed {
+      display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+      border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
+      background: var(--bg-subtle);
+    }
+    .survey-confirmed-answer {
+      flex: 1; font-size: 13px; font-weight: 500; color: var(--content-strong);
+    }
+    .survey-change-btn {
+      background: none; border: none; font-size: 12px; font-weight: 500;
+      color: var(--content-accent); cursor: pointer; padding: 0;
+    }
+    .survey-change-btn:hover { text-decoration: underline; }
+    .csat-scale { display: flex; flex-direction: column; gap: 8px; }
+    .csat-labels {
+      display: flex; justify-content: space-between;
+      font-size: 11px; color: var(--content-subtle);
+    }
+    .csat-buttons { display: flex; gap: 4px; }
+    .csat-btn {
+      flex: 1; height: 36px; border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md); background: white;
+      font-size: 13px; font-weight: 500; color: var(--content-strong);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .csat-btn:hover { border-color: var(--content-accent); background: var(--bg-accent-subtle); }
+    .csat-btn.selected {
+      border-color: var(--content-accent); background: var(--content-accent);
+      color: white;
+    }
   </style>
 </head>
 <body>
@@ -687,7 +778,6 @@
           <a class="nav-item" data-page="banking" onclick="switchPage('banking')">
             <span class="icon"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="16" height="10" rx="2"/><path d="M1 7h16"/></svg></span>
             <span class="label">Banking</span>
-            <span class="nav-badge accent">New</span>
           </a>
           <a class="nav-item" data-page="financing" onclick="switchPage('financing')">
             <span class="icon"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 1L1 5l8 4 8-4-8-4zM1 13l8 4 8-4M1 9l8 4 8-4"/></svg></span>
@@ -701,7 +791,6 @@
           <a class="nav-item" data-page="chief" onclick="switchPage('chief')">
             <span class="icon"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 1v3M1 9h3M14 9h3M9 14v3M4.2 4.2l2.1 2.1M11.7 11.7l2.1 2.1M4.2 13.8l2.1-2.1M11.7 6.3l2.1-2.1"/></svg></span>
             <span class="label">Chief</span>
-            <span class="nav-badge accent">Soon</span>
           </a>
         </div>
         <div class="nav-divider"></div>
@@ -1117,6 +1206,35 @@
                 </div>
               </div>
             </div>
+            <div class="cross-sell-widget" id="crossSellWidget">
+              <div class="cross-sell-header">
+                <span class="cross-sell-label">While you wait</span>
+                <button class="cross-sell-dismiss" onclick="document.getElementById('crossSellWidget').style.display='none'" title="Dismiss">&times;</button>
+              </div>
+              <p class="cross-sell-body">Your review is in progress. In the meantime, explore what else Wayflyer can do for you.</p>
+              <div class="cross-sell-cards">
+                <div class="cross-sell-card" onclick="switchPage('banking')">
+                  <div class="cross-sell-icon" style="background:var(--bg-accent-subtle)">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="var(--content-accent)" stroke-width="1.5"><rect x="1" y="4" width="16" height="10" rx="2"/><path d="M1 7h16"/></svg>
+                  </div>
+                  <div class="cross-sell-card-text">
+                    <h4>Banking</h4>
+                    <p>Earn 2.5% APY. No fees. Always-connected data.</p>
+                  </div>
+                  <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="#999" stroke-width="1.5"><path d="M6 4l4 4-4 4"/></svg>
+                </div>
+                <div class="cross-sell-card" onclick="switchPage('chief')">
+                  <div class="cross-sell-icon" style="background:linear-gradient(135deg,rgba(0,30,255,0.08),rgba(0,218,254,0.08))">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="var(--content-accent)" stroke-width="1.5"><path d="M9 1v3M1 9h3M14 9h3M9 14v3M4.2 4.2l2.1 2.1M11.7 11.7l2.1 2.1M4.2 13.8l2.1-2.1M11.7 6.3l2.1-2.1"/></svg>
+                  </div>
+                  <div class="cross-sell-card-text">
+                    <h4>Chief</h4>
+                    <p>AI-powered insights from your connected data.</p>
+                  </div>
+                  <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="#999" stroke-width="1.5"><path d="M6 4l4 4-4 4"/></svg>
+                </div>
+              </div>
+            </div>
             <div class="flow-bar">
               <span>Next step →</span>
               <button class="flow-btn" onclick="switchScenario('approved');document.getElementById('scenarioSelect').value='approved'">Get approved ▸</button>
@@ -1144,6 +1262,50 @@
                 </div>
               </div>
               <button class="btn-primary" onclick="switchPage('financing-post')" style="width:auto;padding:0 32px;height:44px;font-size:15px">Continue to Financing</button>
+            </div>
+          </div>
+
+          <!-- ─── Persistent widgets: Attribution + CSAT ─── -->
+          <div class="persistent-widgets" id="persistentWidgets">
+            <div class="survey-widget" id="attributionWidget">
+              <div class="survey-header">
+                <h4>How did you hear about Wayflyer?</h4>
+              </div>
+              <div class="survey-options" id="attributionOptions">
+                <button class="survey-option" onclick="selectAttribution(this, 'paid_search')">Paid search (Google, Bing)</button>
+                <button class="survey-option" onclick="selectAttribution(this, 'friend')">Through a friend or colleague</button>
+                <button class="survey-option" onclick="selectAttribution(this, 'outreach')">Wayflyer reached out to me</button>
+                <button class="survey-option" onclick="selectAttribution(this, 'linkedin')">LinkedIn</button>
+                <button class="survey-option" onclick="selectAttribution(this, 'other')">Other</button>
+              </div>
+              <div class="survey-confirmed" id="attributionConfirmed" style="display:none">
+                <span class="survey-confirmed-answer" id="attributionAnswer"></span>
+                <button class="survey-change-btn" onclick="resetAttribution()">Change</button>
+              </div>
+            </div>
+            <div class="survey-widget" id="csatWidget">
+              <div class="survey-header">
+                <h4>How would you rate your experience so far?</h4>
+              </div>
+              <div class="csat-scale" id="csatScale">
+                <div class="csat-labels"><span>Not great</span><span>Excellent</span></div>
+                <div class="csat-buttons" id="csatButtons">
+                  <button class="csat-btn" onclick="selectCsat(1)">1</button>
+                  <button class="csat-btn" onclick="selectCsat(2)">2</button>
+                  <button class="csat-btn" onclick="selectCsat(3)">3</button>
+                  <button class="csat-btn" onclick="selectCsat(4)">4</button>
+                  <button class="csat-btn" onclick="selectCsat(5)">5</button>
+                  <button class="csat-btn" onclick="selectCsat(6)">6</button>
+                  <button class="csat-btn" onclick="selectCsat(7)">7</button>
+                  <button class="csat-btn" onclick="selectCsat(8)">8</button>
+                  <button class="csat-btn" onclick="selectCsat(9)">9</button>
+                  <button class="csat-btn" onclick="selectCsat(10)">10</button>
+                </div>
+              </div>
+              <div class="survey-confirmed" id="csatConfirmed" style="display:none">
+                <span class="survey-confirmed-answer" id="csatAnswer"></span>
+                <button class="survey-change-btn" onclick="resetCsat()">Change</button>
+              </div>
             </div>
           </div>
 
@@ -2154,6 +2316,8 @@
     if (target) document.getElementById(target).classList.add('active');
     const airBanner = document.getElementById('connAirBanner');
     if (airBanner) airBanner.style.display = (scenario === 'funding-airs') ? 'block' : 'none';
+    const widgets = document.getElementById('persistentWidgets');
+    if (widgets) widgets.style.display = (scenario === 'funded') ? 'none' : '';
     updateNavForScenario(scenario);
   }
 
@@ -2343,6 +2507,30 @@
     if (e.key === 'Escape') { closePanel(); closeKycModal(); closeGuide(); }
     if (e.key === '?' && !e.target.closest('input, textarea, select')) { openGuide(); }
   });
+
+  // Attribution widget
+  function selectAttribution(btn, value) {
+    document.getElementById('attributionOptions').style.display = 'none';
+    const confirmed = document.getElementById('attributionConfirmed');
+    confirmed.style.display = 'flex';
+    document.getElementById('attributionAnswer').textContent = btn.textContent;
+  }
+  function resetAttribution() {
+    document.getElementById('attributionConfirmed').style.display = 'none';
+    document.getElementById('attributionOptions').style.display = 'flex';
+  }
+
+  // CSAT widget
+  function selectCsat(score) {
+    document.getElementById('csatScale').style.display = 'none';
+    const confirmed = document.getElementById('csatConfirmed');
+    confirmed.style.display = 'flex';
+    document.getElementById('csatAnswer').textContent = score + ' out of 10';
+  }
+  function resetCsat() {
+    document.getElementById('csatConfirmed').style.display = 'none';
+    document.getElementById('csatScale').style.display = 'flex';
+  }
 </script>
 </body>
 </html>
