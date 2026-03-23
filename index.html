@@ -604,6 +604,69 @@
     .csat-btn.selected {
       background: var(--content-accent); color: white;
     }
+
+    /* ── Product Tour Overlay ── */
+    .tour-overlay {
+      position: fixed; inset: 0; z-index: 800;
+      background: rgba(0,0,0,0.6); backdrop-filter: blur(2px);
+      opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    }
+    .tour-overlay.active { opacity: 1; pointer-events: auto; }
+    .tour-dismiss {
+      position: fixed; top: 16px; left: 16px; z-index: 810;
+      width: 32px; height: 32px; border-radius: 8px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+      color: white; font-size: 16px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    }
+    .tour-overlay.active ~ .tour-dismiss { opacity: 1; pointer-events: auto; }
+    .tour-dismiss:hover { background: rgba(255,255,255,0.2); }
+    .tour-card {
+      position: fixed; z-index: 810;
+      background: white; border-radius: 12px; padding: 24px 28px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.2);
+      max-width: 360px; width: 90%;
+      opacity: 0; pointer-events: none; transform: translateY(8px);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .tour-overlay.active .tour-card { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    .tour-step-indicator {
+      display: flex; gap: 6px; margin-bottom: 16px;
+    }
+    .tour-dot {
+      width: 24px; height: 3px; border-radius: 2px; background: var(--border-subtle);
+      transition: background 0.2s;
+    }
+    .tour-dot.active { background: var(--content-accent); }
+    .tour-dot.done { background: var(--content-accent); opacity: 0.4; }
+    .tour-card h3 {
+      font-family: Inter, sans-serif; font-size: 16px; font-weight: 600;
+      color: var(--content-strong); margin-bottom: 6px;
+    }
+    .tour-card p {
+      font-family: Inter, sans-serif; font-size: 13px; line-height: 1.5;
+      color: var(--content-subtle); margin-bottom: 20px;
+    }
+    .tour-actions { display: flex; align-items: center; justify-content: space-between; }
+    .tour-next {
+      padding: 8px 20px; border-radius: 8px; border: none;
+      background: var(--content-accent); color: white;
+      font-family: Inter, sans-serif; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: opacity 0.15s;
+    }
+    .tour-next:hover { opacity: 0.9; }
+    .tour-skip {
+      background: none; border: none;
+      font-family: Inter, sans-serif; font-size: 12px; font-weight: 500;
+      color: var(--content-subtle); cursor: pointer;
+    }
+    .tour-skip:hover { color: var(--content-strong); }
+    .tour-spotlight {
+      position: fixed; z-index: 805; border-radius: 12px;
+      box-shadow: 0 0 0 9999px rgba(0,0,0,0.55);
+      pointer-events: none; transition: all 0.4s ease;
+    }
   </style>
 </head>
 <body>
@@ -736,6 +799,7 @@
   <div class="sep"></div>
   <button onclick="document.getElementById('scenarioSelect').value='interstitial';switchScenario('interstitial')" style="background:#444;color:white;border:1px solid #666;border-radius:6px;padding:4px 10px;font-size:12px;font-family:var(--font);cursor:pointer;white-space:nowrap">↻ Restart</button>
   <button onclick="openGuide()" style="background:#444;color:white;border:1px solid #666;border-radius:6px;padding:4px 10px;font-size:12px;font-family:var(--font);cursor:pointer;white-space:nowrap" title="Show prototype guide">? Guide</button>
+  <button onclick="switchScenario('in-review');document.getElementById('scenarioSelect').value='in-review';setTimeout(()=>startTour(),300)" style="background:#001eff;color:white;border:none;border-radius:6px;padding:4px 10px;font-size:12px;font-family:var(--font);cursor:pointer;white-space:nowrap">▶ Tour</button>
   <div class="hint">Use flow buttons (▸) inside pages to progress naturally, or jump via scenario selector.</div>
 </div>
 
@@ -746,6 +810,20 @@
   </div>
   <h2>Application submitted</h2>
   <p>Setting up your dashboard...</p>
+</div>
+
+<!-- Product Tour -->
+<div class="tour-overlay" id="tourOverlay"></div>
+<div class="tour-spotlight" id="tourSpotlight"></div>
+<button class="tour-dismiss" id="tourDismiss" onclick="endTour()" title="Exit tour">✕</button>
+<div class="tour-card" id="tourCard" style="bottom:40px;left:50%;transform:translateX(-50%) translateY(8px)">
+  <div class="tour-step-indicator" id="tourDots"></div>
+  <h3 id="tourTitle"></h3>
+  <p id="tourBody"></p>
+  <div class="tour-actions">
+    <button class="tour-skip" onclick="endTour()">Skip tour</button>
+    <button class="tour-next" id="tourNextBtn" onclick="tourNext()">Next</button>
+  </div>
 </div>
 
 <!-- App Shell -->
@@ -1389,7 +1467,7 @@
           </div>
 
           <!-- Banking -->
-          <div class="conn-section">
+          <div class="conn-section" id="connBankingSection">
             <div class="conn-section-header">
               <h3>Banking</h3>
               <button class="btn-text">+ Add connection</button>
@@ -2283,6 +2361,7 @@
         interstitial.classList.remove('active');
         document.getElementById('scenarioSelect').value = 'in-review';
         switchScenario('in-review');
+        setTimeout(() => startTour(), 400);
       }, 2500);
       return;
     }
@@ -2498,6 +2577,119 @@
   function resetAttribution() {
     document.getElementById('attributionConfirmed').style.display = 'none';
     document.getElementById('attributionOptions').style.display = 'flex';
+  }
+
+  // Product Tour
+  const TOUR_STEPS = [
+    {
+      page: 'get-started',
+      title: 'Your application is submitted',
+      body: 'This is your Get Started page. From here you can track your funding application status and complete the steps needed to finish onboarding.',
+      spotlight: () => document.querySelector('#state-in-review .content-grid'),
+      cardPos: 'bottom-center',
+      nextLabel: 'Next'
+    },
+    {
+      page: 'connections',
+      title: 'Your connected data',
+      body: 'This is where you manage all your data connections. You can add more sources to strengthen your application, and this is where you\'ll resolve any additional data requests from our team.',
+      spotlight: () => document.getElementById('connBankingSection'),
+      cardPos: 'bottom-center',
+      nextLabel: 'Next'
+    },
+    {
+      page: 'get-started',
+      title: 'Complete your account setup',
+      body: 'Finish these steps to unlock your Wayflyer account. The sooner you complete them, the faster you can access your funds once approved.',
+      spotlight: () => document.querySelector('#state-in-review .setup-card'),
+      cardPos: 'bottom-center',
+      nextLabel: 'Get started'
+    }
+  ];
+  let tourStep = -1;
+
+  function startTour() {
+    tourStep = 0;
+    document.getElementById('tourOverlay').classList.add('active');
+    document.getElementById('tourDismiss').style.opacity = '1';
+    document.getElementById('tourDismiss').style.pointerEvents = 'auto';
+    renderTourStep();
+  }
+
+  function endTour() {
+    tourStep = -1;
+    document.getElementById('tourOverlay').classList.remove('active');
+    document.getElementById('tourCard').style.opacity = '0';
+    document.getElementById('tourCard').style.pointerEvents = 'none';
+    document.getElementById('tourSpotlight').style.boxShadow = 'none';
+    document.getElementById('tourSpotlight').style.width = '0';
+    document.getElementById('tourDismiss').style.opacity = '0';
+    document.getElementById('tourDismiss').style.pointerEvents = 'none';
+    switchPage('get-started');
+  }
+
+  function tourNext() {
+    if (tourStep >= TOUR_STEPS.length - 1) {
+      endTour();
+      openKycModal();
+      return;
+    }
+    tourStep++;
+    renderTourStep();
+  }
+
+  function renderTourStep() {
+    const step = TOUR_STEPS[tourStep];
+    switchPage(step.page);
+    const card = document.getElementById('tourCard');
+    card.style.opacity = '1';
+    card.style.pointerEvents = 'auto';
+    card.style.transform = '';
+
+    document.getElementById('tourTitle').textContent = step.title;
+    document.getElementById('tourBody').textContent = step.body;
+    document.getElementById('tourNextBtn').textContent = step.nextLabel;
+
+    const dots = document.getElementById('tourDots');
+    dots.innerHTML = '';
+    TOUR_STEPS.forEach((_, i) => {
+      const d = document.createElement('div');
+      d.className = 'tour-dot' + (i === tourStep ? ' active' : i < tourStep ? ' done' : '');
+      dots.appendChild(d);
+    });
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const el = step.spotlight();
+        if (el) {
+          const r = el.getBoundingClientRect();
+          const sl = document.getElementById('tourSpotlight');
+          const pad = 8;
+          sl.style.top = (r.top - pad) + 'px';
+          sl.style.left = (r.left - pad) + 'px';
+          sl.style.width = (r.width + pad * 2) + 'px';
+          sl.style.height = (r.height + pad * 2) + 'px';
+          sl.style.boxShadow = '0 0 0 9999px rgba(0,0,0,0.55)';
+
+          card.style.position = 'fixed';
+          card.style.bottom = 'auto';
+          card.style.left = 'auto';
+          card.style.right = 'auto';
+          card.style.top = 'auto';
+
+          const cardRect = card.getBoundingClientRect();
+          const spotBottom = r.bottom + pad + 16;
+          if (spotBottom + cardRect.height < window.innerHeight - 20) {
+            card.style.top = spotBottom + 'px';
+            card.style.left = Math.max(16, r.left + (r.width / 2) - (cardRect.width / 2)) + 'px';
+          } else {
+            const spotTop = r.top - pad - 16 - cardRect.height;
+            card.style.top = Math.max(60, spotTop) + 'px';
+            card.style.left = Math.max(16, r.left + (r.width / 2) - (cardRect.width / 2)) + 'px';
+          }
+        }
+      });
+    });
   }
 
   // CSAT widget
