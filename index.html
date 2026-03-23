@@ -555,22 +555,23 @@
 
     /* ── Persistent Survey Widgets ── */
     .persistent-widgets {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
-      margin-top: 24px; padding-bottom: 24px;
+      display: flex; gap: 12px;
+      margin-top: 20px; padding-bottom: 16px;
     }
     .survey-widget {
-      border: 1px solid var(--border-subtle); border-radius: var(--radius-xl);
-      padding: 20px; background: white;
+      flex: 1; border: 1px solid var(--border-subtle); border-radius: 10px;
+      padding: 12px 14px; background: var(--bg-subtle);
     }
     .survey-header h4 {
-      font-size: 14px; font-weight: 600; margin-bottom: 14px;
+      font-size: 11px; font-weight: 600; color: var(--content-subtle);
+      margin-bottom: 8px;
     }
-    .survey-options { display: flex; flex-direction: column; gap: 6px; }
+    .survey-options { display: flex; flex-wrap: wrap; gap: 4px; }
     .survey-option {
-      display: block; width: 100%; text-align: left; padding: 10px 14px;
-      border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
-      background: white; font-size: 13px; color: var(--content-strong);
-      cursor: pointer; transition: all 0.15s;
+      display: inline-block; padding: 4px 10px;
+      border: 1px solid var(--border-subtle); border-radius: var(--radius-full);
+      background: white; font-size: 11px; color: var(--content-strong);
+      cursor: pointer; transition: all 0.15s; white-space: nowrap;
     }
     .survey-option:hover { border-color: var(--content-accent); background: var(--bg-accent-subtle); }
     .survey-option.selected {
@@ -578,28 +579,26 @@
       color: var(--content-accent); font-weight: 500;
     }
     .survey-confirmed {
-      display: flex; align-items: center; gap: 10px; padding: 10px 14px;
-      border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
-      background: var(--bg-subtle);
+      display: flex; align-items: center; gap: 8px;
     }
     .survey-confirmed-answer {
-      flex: 1; font-size: 13px; font-weight: 500; color: var(--content-strong);
+      flex: 1; font-size: 11px; font-weight: 500; color: var(--content-strong);
     }
     .survey-change-btn {
-      background: none; border: none; font-size: 12px; font-weight: 500;
+      background: none; border: none; font-size: 10px; font-weight: 500;
       color: var(--content-accent); cursor: pointer; padding: 0;
     }
     .survey-change-btn:hover { text-decoration: underline; }
-    .csat-scale { display: flex; flex-direction: column; gap: 8px; }
+    .csat-scale { display: flex; flex-direction: column; gap: 4px; }
     .csat-labels {
       display: flex; justify-content: space-between;
-      font-size: 11px; color: var(--content-subtle);
+      font-size: 9px; color: var(--content-subtle);
     }
-    .csat-buttons { display: flex; gap: 4px; }
+    .csat-buttons { display: flex; gap: 3px; }
     .csat-btn {
-      flex: 1; height: 36px; border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md); background: white;
-      font-size: 13px; font-weight: 500; color: var(--content-strong);
+      flex: 1; height: 26px; border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm); background: white;
+      font-size: 11px; font-weight: 500; color: var(--content-strong);
       cursor: pointer; transition: all 0.15s;
     }
     .csat-btn:hover { border-color: var(--content-accent); background: var(--bg-accent-subtle); }
