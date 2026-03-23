@@ -553,58 +553,56 @@
     .cross-sell-card-text h4 { font-size: 13px; font-weight: 500; }
     .cross-sell-card-text p { display: none; }
 
-    /* ── Persistent Survey Widgets ── */
+    /* ── Persistent Survey Widgets (FlyDS: label-xs, space-xs, pill radius) ── */
     .persistent-widgets {
-      display: flex; gap: 12px;
-      margin-top: 20px; padding-bottom: 16px;
+      display: flex; gap: 8px; align-items: flex-start;
+      margin-top: 16px; padding-bottom: 8px;
     }
     .survey-widget {
-      flex: 1; border: 1px solid var(--border-subtle); border-radius: 10px;
-      padding: 12px 14px; background: var(--bg-subtle);
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
     }
+    .survey-header { margin: 0; }
     .survey-header h4 {
-      font-size: 11px; font-weight: 600; color: var(--content-subtle);
-      margin-bottom: 8px;
+      font-family: Inter, sans-serif; font-size: 11px; font-weight: 500;
+      color: var(--content-subtle); margin: 0; white-space: nowrap;
     }
     .survey-options { display: flex; flex-wrap: wrap; gap: 4px; }
     .survey-option {
-      display: inline-block; padding: 4px 10px;
-      border: 1px solid var(--border-subtle); border-radius: var(--radius-full);
-      background: white; font-size: 11px; color: var(--content-strong);
-      cursor: pointer; transition: all 0.15s; white-space: nowrap;
+      display: inline-block; padding: 3px 8px;
+      border: none; border-radius: 999px;
+      background: rgba(0,0,0,0.05); font-family: Inter, sans-serif;
+      font-size: 10px; font-weight: 500; color: var(--content-strong);
+      cursor: pointer; transition: all 0.12s; white-space: nowrap; line-height: 1.4;
     }
-    .survey-option:hover { border-color: var(--content-accent); background: var(--bg-accent-subtle); }
-    .survey-option.selected {
-      border-color: var(--content-accent); background: var(--bg-accent-subtle);
-      color: var(--content-accent); font-weight: 500;
-    }
+    .survey-option:hover { background: rgba(0,30,255,0.08); color: var(--content-accent); }
     .survey-confirmed {
-      display: flex; align-items: center; gap: 8px;
+      display: flex; align-items: center; gap: 6px;
     }
     .survey-confirmed-answer {
-      flex: 1; font-size: 11px; font-weight: 500; color: var(--content-strong);
+      font-family: Inter, sans-serif; font-size: 10px; font-weight: 600;
+      color: var(--content-accent); padding: 3px 8px;
+      background: rgba(0,30,255,0.06); border-radius: 999px;
     }
     .survey-change-btn {
-      background: none; border: none; font-size: 10px; font-weight: 500;
-      color: var(--content-accent); cursor: pointer; padding: 0;
+      background: none; border: none;
+      font-family: Inter, sans-serif; font-size: 10px; font-weight: 500;
+      color: var(--content-subtle); cursor: pointer; padding: 0;
+      text-decoration: underline; text-underline-offset: 2px;
     }
-    .survey-change-btn:hover { text-decoration: underline; }
-    .csat-scale { display: flex; flex-direction: column; gap: 4px; }
-    .csat-labels {
-      display: flex; justify-content: space-between;
-      font-size: 9px; color: var(--content-subtle);
-    }
-    .csat-buttons { display: flex; gap: 3px; }
+    .survey-change-btn:hover { color: var(--content-accent); }
+    .csat-scale { display: flex; align-items: center; gap: 4px; }
+    .csat-labels { display: none; }
+    .csat-buttons { display: flex; gap: 2px; }
     .csat-btn {
-      flex: 1; height: 26px; border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-sm); background: white;
-      font-size: 11px; font-weight: 500; color: var(--content-strong);
-      cursor: pointer; transition: all 0.15s;
+      width: 24px; height: 24px; border: none;
+      border-radius: 999px; background: rgba(0,0,0,0.05);
+      font-family: Inter, sans-serif; font-size: 10px; font-weight: 500;
+      color: var(--content-strong); cursor: pointer; transition: all 0.12s;
+      display: flex; align-items: center; justify-content: center; padding: 0;
     }
-    .csat-btn:hover { border-color: var(--content-accent); background: var(--bg-accent-subtle); }
+    .csat-btn:hover { background: rgba(0,30,255,0.08); color: var(--content-accent); }
     .csat-btn.selected {
-      border-color: var(--content-accent); background: var(--content-accent);
-      color: white;
+      background: var(--content-accent); color: white;
     }
   </style>
 </head>
@@ -1254,27 +1252,23 @@
           <!-- ─── Persistent widgets: Attribution + CSAT ─── -->
           <div class="persistent-widgets" id="persistentWidgets">
             <div class="survey-widget" id="attributionWidget">
-              <div class="survey-header">
-                <h4>How did you hear about Wayflyer?</h4>
-              </div>
+              <div class="survey-header"><h4>Heard about us via</h4></div>
               <div class="survey-options" id="attributionOptions">
-                <button class="survey-option" onclick="selectAttribution(this, 'paid_search')">Paid search (Google, Bing)</button>
-                <button class="survey-option" onclick="selectAttribution(this, 'friend')">Through a friend or colleague</button>
-                <button class="survey-option" onclick="selectAttribution(this, 'outreach')">Wayflyer reached out to me</button>
+                <button class="survey-option" onclick="selectAttribution(this, 'paid_search')">Search</button>
+                <button class="survey-option" onclick="selectAttribution(this, 'friend')">Friend</button>
+                <button class="survey-option" onclick="selectAttribution(this, 'outreach')">Wayflyer outreach</button>
                 <button class="survey-option" onclick="selectAttribution(this, 'linkedin')">LinkedIn</button>
                 <button class="survey-option" onclick="selectAttribution(this, 'other')">Other</button>
               </div>
               <div class="survey-confirmed" id="attributionConfirmed" style="display:none">
                 <span class="survey-confirmed-answer" id="attributionAnswer"></span>
-                <button class="survey-change-btn" onclick="resetAttribution()">Change</button>
+                <button class="survey-change-btn" onclick="resetAttribution()">change</button>
               </div>
             </div>
+            <div style="width:1px;height:16px;background:var(--border-subtle);flex-shrink:0;align-self:center"></div>
             <div class="survey-widget" id="csatWidget">
-              <div class="survey-header">
-                <h4>How would you rate your experience so far?</h4>
-              </div>
+              <div class="survey-header"><h4>Experience</h4></div>
               <div class="csat-scale" id="csatScale">
-                <div class="csat-labels"><span>Not great</span><span>Excellent</span></div>
                 <div class="csat-buttons" id="csatButtons">
                   <button class="csat-btn" onclick="selectCsat(1)">1</button>
                   <button class="csat-btn" onclick="selectCsat(2)">2</button>
@@ -1290,7 +1284,7 @@
               </div>
               <div class="survey-confirmed" id="csatConfirmed" style="display:none">
                 <span class="survey-confirmed-answer" id="csatAnswer"></span>
-                <button class="survey-change-btn" onclick="resetCsat()">Change</button>
+                <button class="survey-change-btn" onclick="resetCsat()">change</button>
               </div>
             </div>
           </div>
