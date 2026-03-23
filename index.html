@@ -608,7 +608,7 @@
     /* ── Product Tour Overlay ── */
     .tour-overlay {
       position: fixed; inset: 0; z-index: 800;
-      background: rgba(0,0,0,0.15);
+      background: rgba(0,0,0,0.18);
       opacity: 0; pointer-events: none; transition: opacity 0.3s;
     }
     .tour-overlay.active { opacity: 1; pointer-events: auto; }
@@ -664,9 +664,8 @@
     .tour-skip:hover { color: var(--content-strong); }
     .tour-spotlight {
       position: fixed; z-index: 805; border-radius: 12px;
-      box-shadow: 0 0 0 9999px rgba(0,0,0,0.08);
+      box-shadow: 0 0 0 9999px rgba(0,0,0,0.18);
       pointer-events: none; transition: all 0.4s ease;
-      background: white;
     }
   </style>
 </head>
@@ -2670,7 +2669,7 @@
           sl.style.left = (r.left - pad) + 'px';
           sl.style.width = (r.width + pad * 2) + 'px';
           sl.style.height = (r.height + pad * 2) + 'px';
-          sl.style.boxShadow = '0 0 0 9999px rgba(0,0,0,0.08)';
+          sl.style.boxShadow = '0 0 0 9999px rgba(0,0,0,0.18)';
 
           card.style.position = 'fixed';
           card.style.bottom = 'auto';
