@@ -789,12 +789,12 @@
   </select>
   <div class="sep"></div>
   <label>Task panel:</label>
-  <select onchange="if(this.value)openPanel(this.value);this.value=''">
+  <select onchange="if(this.value)openTaskDemo(this.value);this.value=''">
     <option value="">Open a task demo...</option>
-    <option value="customer-air">Customer App AIR</option>
-    <option value="staff-air">Staff AIR (Banking)</option>
-    <option value="kyc-air">KYC AIR (File Upload)</option>
-    <option value="dq-respond">Underwriting DQ</option>
+    <option value="conn-air-sales">Connection AIR — Online sales</option>
+    <option value="conn-air-banking">Connection AIR — Banking</option>
+    <option value="kyc-air">File Upload AIR</option>
+    <option value="dq-respond">Text Response AIR</option>
   </select>
   <div class="sep"></div>
   <button onclick="document.getElementById('scenarioSelect').value='interstitial';switchScenario('interstitial')" style="background:#444;color:white;border:1px solid #666;border-radius:6px;padding:4px 10px;font-size:12px;font-family:var(--font);cursor:pointer;white-space:nowrap">↻ Restart</button>
@@ -1054,16 +1054,15 @@
               <div class="setup-card">
                 <div class="setup-header">
                   <div class="setup-header-text"><h3>Account setup</h3><p>Action required to continue your review.</p></div>
-                  <button class="btn-primary" onclick="openPanel('customer-air')">Resolve</button>
+                  <button class="btn-primary" onclick="switchPage('conn-air-sales')">Resolve</button>
                 </div>
                 <div class="progress-track"><div class="progress-fill" style="width:60%"></div></div>
-                <div class="setup-row" onclick="openPanel('customer-air')" style="background:rgba(207,34,46,0.03)">
+                <div class="setup-row" onclick="switchPage('conn-air-sales')">
                   <div class="setup-row-text">
-                    <h4>Connect additional platform <span class="time">· 1 min</span></h4>
-                    <p>We need 6 months of revenue data to complete your review</p>
+                    <h4>Additional connection required <span class="time">· 1 min</span></h4>
+                    <p>We need 6 months of online sales data to complete your review</p>
                   </div>
                   <div class="row-action">
-                    <span class="action-badge required">Action required</span>
                     <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="#999" stroke-width="1.5"><path d="M6 4l4 4-4 4"/></svg>
                   </div>
                 </div>
@@ -1140,17 +1139,16 @@
               </div>
               <div class="setup-card">
                 <div class="setup-header">
-                  <div class="setup-header-text"><h3>Account setup</h3><p>Complete the required tasks to continue.</p></div>
-                  <button class="btn-primary" onclick="openPanel('staff-air')">Resolve</button>
+                  <div class="setup-header-text"><h3>Account setup</h3><p>Action required to continue your review.</p></div>
+                  <button class="btn-primary" onclick="switchPage('conn-air-banking')">Resolve</button>
                 </div>
                 <div class="progress-track"><div class="progress-fill" style="width:40%"></div></div>
-                <div class="setup-row" onclick="openPanel('staff-air')" style="background:rgba(191,90,0,0.03)">
+                <div class="setup-row" onclick="switchPage('conn-air-banking')">
                   <div class="setup-row-text">
-                    <h4>Upload bank statements <span class="time">· 3 min</span></h4>
-                    <p>We need 6 months of statements for all your business accounts</p>
+                    <h4>Additional connection required <span class="time">· 3 min</span></h4>
+                    <p>We need 6 months of banking data to complete your review</p>
                   </div>
                   <div class="row-action">
-                    <span class="action-badge required">Action required</span>
                     <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="#999" stroke-width="1.5"><path d="M6 4l4 4-4 4"/></svg>
                   </div>
                 </div>
@@ -1552,6 +1550,102 @@
 
           <div style="margin-top:8px">
             <button class="btn-outline" onclick="switchPage('get-started')">← Back to Get Started</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════ CONNECTION AIR — ONLINE SALES ═══════════════ -->
+      <div data-screen="conn-air-sales">
+        <div class="page-header">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <h1 class="page-title">Additional connection required</h1>
+          </div>
+        </div>
+        <div class="content-wrapper" style="max-width:760px">
+          <p style="font-size:14px;color:var(--content-subtle);margin-bottom:20px;line-height:1.5">Wayflyer requires at least 6 months of online sales data to be able to fund you and we have only received 4 months from your connected platforms.</p>
+          <div class="panel-info-box" style="margin-bottom:28px;display:flex;gap:10px;align-items:flex-start">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#1a56db" stroke-width="1.5" style="flex-shrink:0;margin-top:1px"><circle cx="8" cy="8" r="6"/><path d="M8 5v0M8 7v4"/></svg>
+            <div><strong>Provide revenue data for July 1, 2024 to September 13, 2024</strong><br>Connect another platform, or let us know if you can't.</div>
+          </div>
+          <h3 style="font-size:13px;font-weight:600;margin-bottom:14px;text-transform:uppercase;letter-spacing:0.3px;color:var(--content-subtle)">Online sales</h3>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-bottom:28px">
+            <div style="border:1px solid var(--border-subtle);border-radius:12px;padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:border-color 0.15s" onmouseover="this.style.borderColor='var(--content-accent)'" onmouseout="this.style.borderColor='var(--border-subtle)'">
+              <div style="width:40px;height:40px;border-radius:8px;background:#95bf47;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:white">S</div>
+              <span style="font-size:12px;font-weight:500;text-align:center">Shopify</span>
+            </div>
+            <div style="border:1px solid var(--border-subtle);border-radius:12px;padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:border-color 0.15s" onmouseover="this.style.borderColor='var(--content-accent)'" onmouseout="this.style.borderColor='var(--border-subtle)'">
+              <div style="width:40px;height:40px;border-radius:8px;background:#ff9900;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:white">a</div>
+              <span style="font-size:12px;font-weight:500;text-align:center">Amazon</span>
+            </div>
+            <div style="border:1px solid var(--border-subtle);border-radius:12px;padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:border-color 0.15s" onmouseover="this.style.borderColor='var(--content-accent)'" onmouseout="this.style.borderColor='var(--border-subtle)'">
+              <div style="width:40px;height:40px;border-radius:8px;background:#34313f;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white">BC</div>
+              <span style="font-size:12px;font-weight:500;text-align:center">BigCommerce</span>
+            </div>
+            <div style="border:1px solid var(--border-subtle);border-radius:12px;padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:border-color 0.15s" onmouseover="this.style.borderColor='var(--content-accent)'" onmouseout="this.style.borderColor='var(--border-subtle)'">
+              <div style="width:40px;height:40px;border-radius:8px;background:#7f54b3;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white">Woo</div>
+              <span style="font-size:12px;font-weight:500;text-align:center">WooCommerce</span>
+            </div>
+            <div style="border:1px solid var(--border-subtle);border-radius:12px;padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:border-color 0.15s" onmouseover="this.style.borderColor='var(--content-accent)'" onmouseout="this.style.borderColor='var(--border-subtle)'">
+              <div style="width:40px;height:40px;border-radius:8px;background:#635bff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:white">S</div>
+              <span style="font-size:12px;font-weight:500;text-align:center">Stripe</span>
+            </div>
+            <div style="border:1px solid var(--border-subtle);border-radius:12px;padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:border-color 0.15s" onmouseover="this.style.borderColor='var(--content-accent)'" onmouseout="this.style.borderColor='var(--border-subtle)'">
+              <div style="width:40px;height:40px;border-radius:8px;background:#e37400;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:white">G</div>
+              <span style="font-size:12px;font-weight:500;text-align:center">Google Analytics</span>
+            </div>
+            <div style="border:1px solid var(--border-subtle);border-radius:12px;padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:border-color 0.15s" onmouseover="this.style.borderColor='var(--content-accent)'" onmouseout="this.style.borderColor='var(--border-subtle)'">
+              <div style="width:40px;height:40px;border-radius:8px;background:var(--bg-medium);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--content-subtle)">···</div>
+              <span style="font-size:12px;font-weight:500;text-align:center">Other</span>
+            </div>
+          </div>
+          <div style="margin-bottom:28px">
+            <p style="font-size:13px;font-weight:500;margin-bottom:4px;color:var(--content-strong)">Unable to connect?</p>
+            <p style="font-size:13px;color:var(--content-subtle)"><a href="#" onclick="return false" style="color:var(--content-accent);font-weight:500;text-decoration:none">Let us know why</a> and we'll find the best way to move your application forward.</p>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid var(--border-subtle)">
+            <button class="btn-outline" onclick="switchPage('get-started')">Cancel</button>
+            <button class="btn-primary" onclick="switchPage('get-started')">Done</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════ CONNECTION AIR — BANKING ═══════════════ -->
+      <div data-screen="conn-air-banking">
+        <div class="page-header">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <h1 class="page-title">Additional connection required</h1>
+          </div>
+        </div>
+        <div class="content-wrapper" style="max-width:760px">
+          <p style="font-size:14px;color:var(--content-subtle);margin-bottom:20px;line-height:1.5">Wayflyer requires at least 6 months of banking data to complete your review. Please reconnect your bank account or provide statements manually.</p>
+          <div class="panel-info-box" style="margin-bottom:28px;display:flex;gap:10px;align-items:flex-start">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#1a56db" stroke-width="1.5" style="flex-shrink:0;margin-top:1px"><circle cx="8" cy="8" r="6"/><path d="M8 5v0M8 7v4"/></svg>
+            <div><strong>Provide banking data for September 21, 2025 to March 21, 2026</strong><br>Connect via Plaid, or upload statements manually.</div>
+          </div>
+          <h3 style="font-size:13px;font-weight:600;margin-bottom:14px;text-transform:uppercase;letter-spacing:0.3px;color:var(--content-subtle)">Banking</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px;max-width:480px">
+            <div style="border:1px solid var(--border-subtle);border-radius:12px;padding:28px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;cursor:pointer;transition:border-color 0.15s" onmouseover="this.style.borderColor='var(--content-accent)'" onmouseout="this.style.borderColor='var(--border-subtle)'">
+              <div style="width:48px;height:48px;border-radius:10px;background:#000;display:flex;align-items:center;justify-content:center">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><rect x="5" y="5" width="4" height="4" rx="0.5"/><rect x="11" y="5" width="4" height="4" rx="0.5"/><rect x="17" y="5" width="0" height="4" rx="0.5"/><rect x="3" y="11" width="4" height="4" rx="0.5"/><rect x="9" y="11" width="4" height="4" rx="0.5"/><rect x="15" y="11" width="4" height="4" rx="0.5"/><rect x="5" y="17" width="4" height="4" rx="0.5"/><rect x="11" y="17" width="4" height="4" rx="0.5"/></svg>
+              </div>
+              <div style="text-align:center">
+                <div style="font-size:13px;font-weight:600">Connect via Plaid</div>
+                <div style="font-size:11px;color:var(--content-subtle);margin-top:3px">Instant bank connection</div>
+              </div>
+            </div>
+            <div style="border:1px solid var(--border-subtle);border-radius:12px;padding:28px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;cursor:pointer;transition:border-color 0.15s" onmouseover="this.style.borderColor='var(--content-accent)'" onmouseout="this.style.borderColor='var(--border-subtle)'">
+              <div style="width:48px;height:48px;border-radius:10px;background:var(--bg-subtle);border:1px solid var(--border-subtle);display:flex;align-items:center;justify-content:center">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="var(--content-subtle)" stroke-width="1.5"><path d="M11 2v10M7 7l4-5 4 5M3 17v1a2 2 0 002 2h12a2 2 0 002-2v-1"/></svg>
+              </div>
+              <div style="text-align:center">
+                <div style="font-size:13px;font-weight:600">Upload statements</div>
+                <div style="font-size:11px;color:var(--content-subtle);margin-top:3px">PDF, CSV, or XLS</div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid var(--border-subtle)">
+            <button class="btn-outline" onclick="switchPage('get-started')">Cancel</button>
+            <button class="btn-primary" onclick="switchPage('get-started')">Done</button>
           </div>
         </div>
       </div>
@@ -2438,6 +2532,14 @@
       document.getElementById('userMenu').style.display = 'none';
     }
   });
+
+  function openTaskDemo(value) {
+    if (value === 'conn-air-sales' || value === 'conn-air-banking') {
+      switchPage(value);
+    } else if (value) {
+      openPanel(value);
+    }
+  }
 
   function openPanel(panelId) {
     closePanel();
