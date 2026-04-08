@@ -2701,9 +2701,12 @@
   });
 
   function openTaskDemo(value) {
-    if (value === 'conn-air-sales') { openConnAirModal('sales'); }
-    else if (value === 'conn-air-banking') { openConnAirModal('banking'); }
-    else if (value) { openPanel(value); }
+    if (value === 'conn-air-sales' || value === 'conn-air-banking') {
+      switchScenario('funding-airs');
+      document.getElementById('scenarioSelect').value = 'funding-airs';
+    } else if (value) {
+      openPanel(value);
+    }
   }
 
   // ── Connection AIR Modal ──
