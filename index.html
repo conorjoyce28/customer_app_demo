@@ -1088,17 +1088,19 @@
                   <div><div class="status-title">Funding application</div></div>
                   <span class="status-badge hold">On hold</span>
                 </div>
-                <div class="status-body">
-                  <div class="status-illustration" style="border-color:var(--content-critical)"><div class="loading-spinner" style="border-top-color:var(--content-critical)"></div></div>
+                <div style="font-size:13px;color:var(--content-subtle);line-height:1.5;flex:1;padding:8px 0">
+                  Complete the tasks in the setup guide to move forward with your application.
                 </div>
-                <div class="status-message">Complete the required tasks to continue your review.</div>
+                <div style="font-size:12px;color:var(--content-subtle);text-align:center;padding-top:12px;border-top:1px solid var(--border-subtle)">
+                  To continue, connect the required platform in account setup.
+                </div>
               </div>
               <div class="setup-card">
                 <div class="setup-header">
-                  <div class="setup-header-text"><h3>Account setup</h3><p>Action required to continue your review.</p></div>
-                  <button class="btn-primary" id="resolveBtnSales" onclick="openConnAirModal('sales')">Resolve</button>
+                  <div class="setup-header-text"><h3>Account setup</h3><p>Finish setting up your account to access financing.</p></div>
                 </div>
                 <div class="progress-track"><div class="progress-fill" style="width:60%"></div></div>
+                <!-- Connection AIR — reconnection type → opens modal -->
                 <div class="setup-row" id="airRowSales" onclick="openConnAirModal('sales')">
                   <div class="setup-row-text">
                     <h4>Additional connection required <span class="time">· 3 min</span></h4>
@@ -1109,13 +1111,38 @@
                     <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="#999" stroke-width="1.5"><path d="M6 4l4 4-4 4"/></svg>
                   </div>
                 </div>
-                <div class="setup-row kyc-task" onclick="openKycModal(5)">
-                  <div class="setup-row-text"><h4>Key roles <span class="time">· 1 min</span></h4><p>Assign contract signer and bank account holder</p></div>
-                  <div class="row-action"><svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="#999" stroke-width="1.5"><path d="M6 4l4 4-4 4"/></svg></div>
+                <!-- Connection AIR — reconnect specific platform → opens modal -->
+                <div class="setup-row" id="airRowGAnalytics" onclick="openConnAirModal('sales')">
+                  <div class="setup-row-text">
+                    <h4>Reconnect your Google Analytics account <span class="time">· 3 min</span></h4>
+                    <p>Your Google Analytics connection has expired and data is no longer flowing.</p>
+                  </div>
+                  <div class="row-action">
+                    <span class="action-badge" id="airBadgeGAnalytics" style="background:var(--bg-status-warning);color:var(--content-warning)">Action required</span>
+                    <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="#999" stroke-width="1.5"><path d="M6 4l4 4-4 4"/></svg>
+                  </div>
                 </div>
-                <div class="setup-row kyc-task" onclick="openKycModal(7)">
-                  <div class="setup-row-text"><h4>Upload certificate of incorporation <span class="time">· 1 min</span></h4><p>Proves your business is registered</p></div>
-                  <div class="row-action"><svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="#999" stroke-width="1.5"><path d="M6 4l4 4-4 4"/></svg></div>
+                <!-- File Upload AIR → opens side panel -->
+                <div class="setup-row" onclick="openPanel('kyc-air')">
+                  <div class="setup-row-text">
+                    <h4>Upload bank statements <span class="time">· 2 min</span></h4>
+                    <p>We need 6 months of statements for all your business accounts.</p>
+                  </div>
+                  <div class="row-action">
+                    <span class="action-badge" style="background:var(--bg-status-warning);color:var(--content-warning)">Action required</span>
+                    <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="#999" stroke-width="1.5"><path d="M6 4l4 4-4 4"/></svg>
+                  </div>
+                </div>
+                <!-- Text Response AIR (DQ) → opens side panel -->
+                <div class="setup-row" onclick="openPanel('dq-respond')">
+                  <div class="setup-row-text">
+                    <h4>We have a question about your application <span class="time">· 1 min</span></h4>
+                    <p>Our review team needs clarification on a specific aspect of your application.</p>
+                  </div>
+                  <div class="row-action">
+                    <span class="action-badge" style="background:var(--bg-status-warning);color:var(--content-warning)">Action required</span>
+                    <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="#999" stroke-width="1.5"><path d="M6 4l4 4-4 4"/></svg>
+                  </div>
                 </div>
               </div>
             </div>
@@ -2828,13 +2855,10 @@
   function resolveAirRow(type) {
     const badgeId = type === 'sales' ? 'airBadgeSales' : 'airBadgeBanking';
     const rowId = type === 'sales' ? 'airRowSales' : 'airRowBanking';
-    const resolveId = type === 'sales' ? 'resolveBtnSales' : 'resolveBtnBanking';
     const badge = document.getElementById(badgeId);
-    if (badge) { badge.textContent = 'In review'; badge.className = 'action-badge'; badge.style.background = '#e8f0fe'; badge.style.color = '#1a56db'; }
+    if (badge) { badge.textContent = 'Done'; badge.className = 'action-badge'; badge.style.background = 'var(--bg-status-positive)'; badge.style.color = 'var(--content-positive)'; }
     const row = document.getElementById(rowId);
-    if (row) { row.onclick = null; row.style.cursor = 'default'; }
-    const btn = document.getElementById(resolveId);
-    if (btn) btn.style.display = 'none';
+    if (row) { row.onclick = null; row.style.cursor = 'default'; row.style.background = 'rgba(26,127,55,0.03)'; }
   }
 
   function openPanel(panelId) {
