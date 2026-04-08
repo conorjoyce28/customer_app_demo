@@ -1112,7 +1112,7 @@
                   </div>
                 </div>
                 <!-- Connection AIR — reconnect specific platform → opens modal -->
-                <div class="setup-row" id="airRowGAnalytics" onclick="openConnAirModal('sales')">
+                <div class="setup-row" id="airRowGAnalytics" onclick="openConnAirModal('sales','ganalytics')">
                   <div class="setup-row-text">
                     <h4>Reconnect your Google Analytics account <span class="time">· 3 min</span></h4>
                     <p>Your Google Analytics connection has expired and data is no longer flowing.</p>
@@ -2708,9 +2708,11 @@
 
   // ── Connection AIR Modal ──
   let connAirCurrentPlatform = null;
+  let connAirActiveRow = null; // tracks which AIR row triggered the modal
 
-  function openConnAirModal(type) {
+  function openConnAirModal(type, rowId) {
     closePanel();
+    connAirActiveRow = rowId || (type === 'banking' ? 'banking' : 'sales');
     if (type === 'sales') {
       // Reset state
       connAirCurrentPlatform = null;
@@ -2721,6 +2723,10 @@
       document.getElementById('connAirPreConnect').style.display = '';
       document.getElementById('connAirPostConnect').style.display = 'none';
       document.getElementById('connAirSalesModal').classList.add('open');
+      // If triggered from a specific platform row, pre-open that platform's panel
+      if (rowId === 'ganalytics') {
+        setTimeout(() => openConnAirPlatform('ganalytics', 'Google Analytics'), 80);
+      }
     } else {
       connAirCurrentPlatform = null;
       document.querySelectorAll('#connAirBankingModal .conn-air-tile').forEach(t => t.classList.remove('selected'));
@@ -2785,13 +2791,13 @@
 
   function submitConnAirSales() {
     closeConnAirModal();
-    resolveAirRow('sales');
+    resolveAirRow(connAirActiveRow || 'sales');
     switchPage('get-started');
   }
 
   function submitCantConnect() {
     closeConnAirModal();
-    resolveAirRow('sales');
+    resolveAirRow(connAirActiveRow || 'sales');
     switchPage('get-started');
   }
 
@@ -2853,11 +2859,11 @@
   }
 
   function resolveAirRow(type) {
-    const badgeId = type === 'sales' ? 'airBadgeSales' : 'airBadgeBanking';
-    const rowId = type === 'sales' ? 'airRowSales' : 'airRowBanking';
-    const badge = document.getElementById(badgeId);
+    const badgeMap = { 'sales': 'airBadgeSales', 'ganalytics': 'airBadgeGAnalytics', 'banking': 'airBadgeBanking' };
+    const rowMap = { 'sales': 'airRowSales', 'ganalytics': 'airRowGAnalytics', 'banking': 'airRowBanking' };
+    const badge = document.getElementById(badgeMap[type]);
     if (badge) { badge.textContent = 'Done'; badge.className = 'action-badge'; badge.style.background = 'var(--bg-status-positive)'; badge.style.color = 'var(--content-positive)'; }
-    const row = document.getElementById(rowId);
+    const row = document.getElementById(rowMap[type]);
     if (row) { row.onclick = null; row.style.cursor = 'default'; row.style.background = 'rgba(26,127,55,0.03)'; }
   }
 
