@@ -667,6 +667,48 @@
       box-shadow: 0 0 0 9999px rgba(0,0,0,0.18);
       pointer-events: none; transition: all 0.4s ease;
     }
+
+    /* ── Connection AIR Modal ── */
+    .conn-air-modal {
+      position: fixed; inset: 0; z-index: 800; background: #dcdcdc;
+      display: flex; margin-top: 40px;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    }
+    .conn-air-modal.open { opacity: 1; pointer-events: auto; }
+    .conn-air-left { flex: 1; background: white; overflow-y: auto; min-width: 0; display: flex; flex-direction: column; }
+    .conn-air-inner { padding: 36px 52px; max-width: 680px; }
+    .conn-air-logo { font-family: Inter, sans-serif; font-size: 17px; font-weight: 600; letter-spacing: -0.5px; color: #0d0d0d; margin-bottom: 36px; display: block; }
+    .conn-air-tiles { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0 24px; }
+    .conn-air-tile {
+      width: 92px; border: 1px solid var(--border-subtle); border-radius: 12px;
+      padding: 14px 8px 12px; display: flex; flex-direction: column; align-items: center;
+      gap: 7px; cursor: pointer; transition: all 0.15s; flex-shrink: 0;
+      background: white; position: relative;
+    }
+    .conn-air-tile:hover { border-color: var(--content-accent); }
+    .conn-air-tile.selected { border-color: var(--content-accent); background: var(--bg-accent-subtle); }
+    .conn-air-tile .t-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: white; flex-shrink: 0; }
+    .conn-air-tile .t-name { font-size: 11px; font-weight: 500; text-align: center; color: var(--content-strong); }
+    .conn-air-tile .t-sub { font-size: 10px; color: var(--content-accent); font-weight: 600; text-align: center; display: none; }
+    .conn-air-tile.connected { border-color: var(--content-positive); }
+    .conn-air-tile.connected .t-sub { display: block; color: var(--content-positive); }
+    .conn-air-rpanel {
+      width: 420px; flex-shrink: 0; background: white; border-left: 1px solid #e0e0e0;
+      transform: translateX(100%); transition: transform 0.3s ease;
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    .conn-air-rpanel.open { transform: translateX(0); }
+    .conn-air-rph { display: flex; align-items: center; gap: 10px; padding: 20px 24px; border-bottom: 1px solid var(--border-subtle); flex-shrink: 0; }
+    .conn-air-rph h3 { font-size: 16px; font-weight: 600; flex: 1; }
+    .conn-air-rpb { flex: 1; overflow-y: auto; padding: 24px; }
+    .conn-air-rpf { padding: 16px 24px; border-top: 1px solid var(--border-subtle); display: flex; gap: 8px; justify-content: flex-end; flex-shrink: 0; }
+    .conn-air-steps { display: flex; flex-direction: column; gap: 12px; margin: 16px 0; }
+    .conn-air-step { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; line-height: 1.4; }
+    .conn-air-step-dot { width: 20px; height: 20px; border-radius: 50%; background: var(--bg-accent); color: white; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .conn-air-connected-row { border: 1px solid var(--border-subtle); border-radius: 8px; padding: 10px 14px; display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 13px; }
+    .conn-air-view { display: none; }
+    .conn-air-view.active { display: block; }
+    .air-row-inreview { background: #e8f0fe !important; color: #1a56db !important; }
   </style>
 </head>
 <body>
@@ -1054,15 +1096,16 @@
               <div class="setup-card">
                 <div class="setup-header">
                   <div class="setup-header-text"><h3>Account setup</h3><p>Action required to continue your review.</p></div>
-                  <button class="btn-primary" onclick="switchPage('conn-air-sales')">Resolve</button>
+                  <button class="btn-primary" id="resolveBtnSales" onclick="openConnAirModal('sales')">Resolve</button>
                 </div>
                 <div class="progress-track"><div class="progress-fill" style="width:60%"></div></div>
-                <div class="setup-row" onclick="switchPage('conn-air-sales')">
+                <div class="setup-row" id="airRowSales" onclick="openConnAirModal('sales')">
                   <div class="setup-row-text">
-                    <h4>Additional connection required <span class="time">· 1 min</span></h4>
-                    <p>We need 6 months of online sales data to complete your review</p>
+                    <h4>Additional connection required <span class="time">· 3 min</span></h4>
+                    <p>We are missing sales data for July 1, 2024 to September 13, 2024.</p>
                   </div>
                   <div class="row-action">
+                    <span class="action-badge" id="airBadgeSales" style="background:var(--bg-status-warning);color:var(--content-warning)">Action required</span>
                     <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="#999" stroke-width="1.5"><path d="M6 4l4 4-4 4"/></svg>
                   </div>
                 </div>
@@ -1140,15 +1183,16 @@
               <div class="setup-card">
                 <div class="setup-header">
                   <div class="setup-header-text"><h3>Account setup</h3><p>Action required to continue your review.</p></div>
-                  <button class="btn-primary" onclick="switchPage('conn-air-banking')">Resolve</button>
+                  <button class="btn-primary" id="resolveBtnBanking" onclick="openConnAirModal('banking')">Resolve</button>
                 </div>
                 <div class="progress-track"><div class="progress-fill" style="width:40%"></div></div>
-                <div class="setup-row" onclick="switchPage('conn-air-banking')">
+                <div class="setup-row" id="airRowBanking" onclick="openConnAirModal('banking')">
                   <div class="setup-row-text">
                     <h4>Additional connection required <span class="time">· 3 min</span></h4>
-                    <p>We need 6 months of banking data to complete your review</p>
+                    <p>We are missing banking data for September 21, 2025 to March 21, 2026.</p>
                   </div>
                   <div class="row-action">
+                    <span class="action-badge" id="airBadgeBanking" style="background:var(--bg-status-warning);color:var(--content-warning)">Action required</span>
                     <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="#999" stroke-width="1.5"><path d="M6 4l4 4-4 4"/></svg>
                   </div>
                 </div>
@@ -1554,102 +1598,6 @@
         </div>
       </div>
 
-      <!-- ═══════════════ CONNECTION AIR — ONLINE SALES ═══════════════ -->
-      <div data-screen="conn-air-sales">
-        <div class="page-header">
-          <div style="display:flex;align-items:center;justify-content:space-between">
-            <h1 class="page-title">Additional connection required</h1>
-          </div>
-        </div>
-        <div class="content-wrapper" style="max-width:760px">
-          <p style="font-size:14px;color:var(--content-subtle);margin-bottom:20px;line-height:1.5">Wayflyer requires at least 6 months of online sales data to be able to fund you and we have only received 4 months from your connected platforms.</p>
-          <div class="panel-info-box" style="margin-bottom:28px;display:flex;gap:10px;align-items:flex-start">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#1a56db" stroke-width="1.5" style="flex-shrink:0;margin-top:1px"><circle cx="8" cy="8" r="6"/><path d="M8 5v0M8 7v4"/></svg>
-            <div><strong>Provide revenue data for July 1, 2024 to September 13, 2024</strong><br>Connect another platform, or let us know if you can't.</div>
-          </div>
-          <h3 style="font-size:13px;font-weight:600;margin-bottom:14px;text-transform:uppercase;letter-spacing:0.3px;color:var(--content-subtle)">Online sales</h3>
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-bottom:28px">
-            <div style="border:1px solid var(--border-subtle);border-radius:12px;padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:border-color 0.15s" onmouseover="this.style.borderColor='var(--content-accent)'" onmouseout="this.style.borderColor='var(--border-subtle)'">
-              <div style="width:40px;height:40px;border-radius:8px;background:#95bf47;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:white">S</div>
-              <span style="font-size:12px;font-weight:500;text-align:center">Shopify</span>
-            </div>
-            <div style="border:1px solid var(--border-subtle);border-radius:12px;padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:border-color 0.15s" onmouseover="this.style.borderColor='var(--content-accent)'" onmouseout="this.style.borderColor='var(--border-subtle)'">
-              <div style="width:40px;height:40px;border-radius:8px;background:#ff9900;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:white">a</div>
-              <span style="font-size:12px;font-weight:500;text-align:center">Amazon</span>
-            </div>
-            <div style="border:1px solid var(--border-subtle);border-radius:12px;padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:border-color 0.15s" onmouseover="this.style.borderColor='var(--content-accent)'" onmouseout="this.style.borderColor='var(--border-subtle)'">
-              <div style="width:40px;height:40px;border-radius:8px;background:#34313f;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white">BC</div>
-              <span style="font-size:12px;font-weight:500;text-align:center">BigCommerce</span>
-            </div>
-            <div style="border:1px solid var(--border-subtle);border-radius:12px;padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:border-color 0.15s" onmouseover="this.style.borderColor='var(--content-accent)'" onmouseout="this.style.borderColor='var(--border-subtle)'">
-              <div style="width:40px;height:40px;border-radius:8px;background:#7f54b3;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white">Woo</div>
-              <span style="font-size:12px;font-weight:500;text-align:center">WooCommerce</span>
-            </div>
-            <div style="border:1px solid var(--border-subtle);border-radius:12px;padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:border-color 0.15s" onmouseover="this.style.borderColor='var(--content-accent)'" onmouseout="this.style.borderColor='var(--border-subtle)'">
-              <div style="width:40px;height:40px;border-radius:8px;background:#635bff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:white">S</div>
-              <span style="font-size:12px;font-weight:500;text-align:center">Stripe</span>
-            </div>
-            <div style="border:1px solid var(--border-subtle);border-radius:12px;padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:border-color 0.15s" onmouseover="this.style.borderColor='var(--content-accent)'" onmouseout="this.style.borderColor='var(--border-subtle)'">
-              <div style="width:40px;height:40px;border-radius:8px;background:#e37400;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:white">G</div>
-              <span style="font-size:12px;font-weight:500;text-align:center">Google Analytics</span>
-            </div>
-            <div style="border:1px solid var(--border-subtle);border-radius:12px;padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:border-color 0.15s" onmouseover="this.style.borderColor='var(--content-accent)'" onmouseout="this.style.borderColor='var(--border-subtle)'">
-              <div style="width:40px;height:40px;border-radius:8px;background:var(--bg-medium);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--content-subtle)">···</div>
-              <span style="font-size:12px;font-weight:500;text-align:center">Other</span>
-            </div>
-          </div>
-          <div style="margin-bottom:28px">
-            <p style="font-size:13px;font-weight:500;margin-bottom:4px;color:var(--content-strong)">Unable to connect?</p>
-            <p style="font-size:13px;color:var(--content-subtle)"><a href="#" onclick="return false" style="color:var(--content-accent);font-weight:500;text-decoration:none">Let us know why</a> and we'll find the best way to move your application forward.</p>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid var(--border-subtle)">
-            <button class="btn-outline" onclick="switchPage('get-started')">Cancel</button>
-            <button class="btn-primary" onclick="switchPage('get-started')">Done</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ═══════════════ CONNECTION AIR — BANKING ═══════════════ -->
-      <div data-screen="conn-air-banking">
-        <div class="page-header">
-          <div style="display:flex;align-items:center;justify-content:space-between">
-            <h1 class="page-title">Additional connection required</h1>
-          </div>
-        </div>
-        <div class="content-wrapper" style="max-width:760px">
-          <p style="font-size:14px;color:var(--content-subtle);margin-bottom:20px;line-height:1.5">Wayflyer requires at least 6 months of banking data to complete your review. Please reconnect your bank account or provide statements manually.</p>
-          <div class="panel-info-box" style="margin-bottom:28px;display:flex;gap:10px;align-items:flex-start">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#1a56db" stroke-width="1.5" style="flex-shrink:0;margin-top:1px"><circle cx="8" cy="8" r="6"/><path d="M8 5v0M8 7v4"/></svg>
-            <div><strong>Provide banking data for September 21, 2025 to March 21, 2026</strong><br>Connect via Plaid, or upload statements manually.</div>
-          </div>
-          <h3 style="font-size:13px;font-weight:600;margin-bottom:14px;text-transform:uppercase;letter-spacing:0.3px;color:var(--content-subtle)">Banking</h3>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px;max-width:480px">
-            <div style="border:1px solid var(--border-subtle);border-radius:12px;padding:28px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;cursor:pointer;transition:border-color 0.15s" onmouseover="this.style.borderColor='var(--content-accent)'" onmouseout="this.style.borderColor='var(--border-subtle)'">
-              <div style="width:48px;height:48px;border-radius:10px;background:#000;display:flex;align-items:center;justify-content:center">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><rect x="5" y="5" width="4" height="4" rx="0.5"/><rect x="11" y="5" width="4" height="4" rx="0.5"/><rect x="17" y="5" width="0" height="4" rx="0.5"/><rect x="3" y="11" width="4" height="4" rx="0.5"/><rect x="9" y="11" width="4" height="4" rx="0.5"/><rect x="15" y="11" width="4" height="4" rx="0.5"/><rect x="5" y="17" width="4" height="4" rx="0.5"/><rect x="11" y="17" width="4" height="4" rx="0.5"/></svg>
-              </div>
-              <div style="text-align:center">
-                <div style="font-size:13px;font-weight:600">Connect via Plaid</div>
-                <div style="font-size:11px;color:var(--content-subtle);margin-top:3px">Instant bank connection</div>
-              </div>
-            </div>
-            <div style="border:1px solid var(--border-subtle);border-radius:12px;padding:28px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;cursor:pointer;transition:border-color 0.15s" onmouseover="this.style.borderColor='var(--content-accent)'" onmouseout="this.style.borderColor='var(--border-subtle)'">
-              <div style="width:48px;height:48px;border-radius:10px;background:var(--bg-subtle);border:1px solid var(--border-subtle);display:flex;align-items:center;justify-content:center">
-                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="var(--content-subtle)" stroke-width="1.5"><path d="M11 2v10M7 7l4-5 4 5M3 17v1a2 2 0 002 2h12a2 2 0 002-2v-1"/></svg>
-              </div>
-              <div style="text-align:center">
-                <div style="font-size:13px;font-weight:600">Upload statements</div>
-                <div style="font-size:11px;color:var(--content-subtle);margin-top:3px">PDF, CSV, or XLS</div>
-              </div>
-            </div>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid var(--border-subtle)">
-            <button class="btn-outline" onclick="switchPage('get-started')">Cancel</button>
-            <button class="btn-primary" onclick="switchPage('get-started')">Done</button>
-          </div>
-        </div>
-      </div>
-
       <!-- ═══════════════ CHIEF (PERFORMANCE) PAGE ═══════════════ -->
       <div data-screen="chief">
         <div class="page-header"><h1 class="page-title">Chief</h1></div>
@@ -2010,6 +1958,198 @@
         </div>
       </div>
 
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ CONNECTION AIR — ONLINE SALES MODAL ═══════════════ -->
+<div class="conn-air-modal" id="connAirSalesModal">
+  <!-- Left content -->
+  <div class="conn-air-left">
+    <div class="conn-air-inner">
+      <span class="conn-air-logo">wayflyer</span>
+
+      <!-- View: main (tiles) -->
+      <div class="conn-air-view active" id="connAirView_main">
+        <h2 style="font-size:22px;font-weight:600;letter-spacing:-0.3px;margin-bottom:8px">Connect a platform</h2>
+        <p style="font-size:14px;color:var(--content-subtle);margin-bottom:20px;line-height:1.5">Provide revenue data for July 1, 2024 to September 13, 2024</p>
+        <div class="panel-info-box" style="margin-bottom:24px;display:flex;gap:10px;align-items:flex-start">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#1a56db" stroke-width="1.5" style="flex-shrink:0;margin-top:1px"><circle cx="8" cy="8" r="6"/><path d="M8 5v0M8 7v4"/></svg>
+          <div style="font-size:13px"><strong>We need 6 months of revenue data</strong><br>Connect another online sales platform, or let us know if you can't.</div>
+        </div>
+        <p style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.4px;color:var(--content-subtle);margin-bottom:12px">Online sales</p>
+        <div class="conn-air-tiles">
+          <div class="conn-air-tile" id="tile_shopify" onclick="openConnAirPlatform('shopify','Shopify')">
+            <div class="t-icon" style="background:#95bf47">S</div>
+            <span class="t-name">Shopify</span>
+            <span class="t-sub" id="shopifyTileSub">2 stores</span>
+          </div>
+          <div class="conn-air-tile" id="tile_amazon" onclick="openConnAirPlatform('amazon','Amazon')">
+            <div class="t-icon" style="background:#ff9900">a</div>
+            <span class="t-name">Amazon</span>
+          </div>
+          <div class="conn-air-tile" id="tile_bigcommerce" onclick="openConnAirPlatform('bigcommerce','BigCommerce')">
+            <div class="t-icon" style="background:#34313f;font-size:11px">BC</div>
+            <span class="t-name">BigCommerce</span>
+          </div>
+          <div class="conn-air-tile" id="tile_woocommerce" onclick="openConnAirPlatform('woocommerce','WooCommerce')">
+            <div class="t-icon" style="background:#7f54b3;font-size:10px">Woo</div>
+            <span class="t-name">WooCommerce</span>
+          </div>
+          <div class="conn-air-tile" id="tile_stripe" onclick="openConnAirPlatform('stripe','Stripe')">
+            <div class="t-icon" style="background:#635bff">S</div>
+            <span class="t-name">Stripe</span>
+          </div>
+          <div class="conn-air-tile" id="tile_ganalytics" onclick="openConnAirPlatform('ganalytics','Google Analytics')">
+            <div class="t-icon" style="background:#e37400">G</div>
+            <span class="t-name">Google Analytics</span>
+          </div>
+          <div class="conn-air-tile" id="tile_other" onclick="openConnAirPlatform('other','Other platform')">
+            <div class="t-icon" style="background:var(--bg-medium);color:var(--content-subtle);font-size:18px">···</div>
+            <span class="t-name">Other</span>
+          </div>
+        </div>
+        <div style="margin-top:8px;margin-bottom:32px">
+          <p style="font-size:13px;font-weight:500;color:var(--content-strong);margin-bottom:4px">Unable to connect?</p>
+          <p style="font-size:13px;color:var(--content-subtle)"><a href="#" onclick="showCantConnect();return false" style="color:var(--content-accent);font-weight:500;text-decoration:none">Let us know why</a> and we'll find the best way to move your application forward.</p>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;padding-top:20px;border-top:1px solid var(--border-subtle)">
+          <button class="btn-outline" onclick="closeConnAirModal()">Cancel</button>
+          <button class="btn-primary" style="margin-left:auto" onclick="submitConnAirSales()">Done</button>
+        </div>
+      </div>
+
+      <!-- View: can't connect -->
+      <div class="conn-air-view" id="connAirView_cantconnect">
+        <h2 style="font-size:22px;font-weight:600;letter-spacing:-0.3px;margin-bottom:8px">Tell us more so we can help</h2>
+        <p style="font-size:14px;color:var(--content-subtle);margin-bottom:28px;line-height:1.5">Our team will review and get back to you within one to two business days. Your application will stay open.</p>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:32px">
+          <label style="display:flex;align-items:center;gap:12px;font-size:15px;cursor:pointer"><input type="radio" name="cantconnect" style="width:20px;height:20px;accent-color:var(--bg-accent)"> My online business is less than six months old</label>
+          <label style="display:flex;align-items:center;gap:12px;font-size:15px;cursor:pointer"><input type="radio" name="cantconnect" style="width:20px;height:20px;accent-color:var(--bg-accent)"> I no longer use my previous platform</label>
+          <label style="display:flex;align-items:center;gap:12px;font-size:15px;cursor:pointer"><input type="radio" name="cantconnect" style="width:20px;height:20px;accent-color:var(--bg-accent)"> I don't have another platform to connect</label>
+          <label style="display:flex;align-items:center;gap:12px;font-size:15px;cursor:pointer"><input type="radio" name="cantconnect" style="width:20px;height:20px;accent-color:var(--bg-accent)"> Other</label>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn-outline" onclick="showConnAirMain()">Back</button>
+          <button class="btn-primary" onclick="submitCantConnect()">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right panel: platform connection -->
+  <div class="conn-air-rpanel" id="connAirRPanel">
+    <div class="conn-air-rph">
+      <button class="panel-close" onclick="closeConnAirRPanel()">✕</button>
+      <h3 id="connAirRPanelTitle">Connect Shopify</h3>
+    </div>
+    <div class="conn-air-rpb">
+      <!-- Pre-connect -->
+      <div id="connAirPreConnect">
+        <p style="font-size:13px;color:var(--content-subtle);line-height:1.5;margin-bottom:20px">We use your <span id="connAirPlatformNameInline">Shopify</span> data to understand your business performance and figure out how much financing we can offer.</p>
+        <p style="font-size:13px;font-weight:600;margin-bottom:12px">Connect your store</p>
+        <div style="border:1px solid var(--border-subtle);border-radius:10px;background:var(--bg-subtle);height:120px;display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+          <span style="font-size:12px;color:var(--content-subtle)">App Store preview</span>
+        </div>
+        <div class="conn-air-steps">
+          <div class="conn-air-step"><div class="conn-air-step-dot">1</div><div><strong>Click 'Connect store' below</strong><br><span style="color:var(--content-subtle)">This opens the platform connection flow.</span></div></div>
+          <div class="conn-air-step"><div class="conn-air-step-dot">2</div><div><strong>Authorise the Wayflyer app</strong><br><span style="color:var(--content-subtle)">Sign in if prompted and grant access.</span></div></div>
+          <div class="conn-air-step"><div class="conn-air-step-dot">3</div><div><strong>Done!</strong><br><span style="color:var(--content-subtle)">We'll redirect you back to see your connected store.</span></div></div>
+        </div>
+        <button class="btn-primary" style="width:100%;margin-top:8px" onclick="simulateConnect()">Connect store</button>
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border-subtle)">
+          <p style="font-size:12px;color:var(--content-subtle)">Got multiple accounts? Our <a href="#" onclick="return false" style="color:var(--content-accent);font-weight:500;text-decoration:none">Help Center</a> shows you how to connect them all.</p>
+        </div>
+      </div>
+      <!-- Post-connect (connected state) -->
+      <div id="connAirPostConnect" style="display:none">
+        <p style="font-size:13px;color:var(--content-subtle);line-height:1.5;margin-bottom:20px">We use your <span class="connAirPlatformNameInline2">Shopify</span> data to understand your business performance and figure out how much financing we can offer.</p>
+        <p style="font-size:13px;font-weight:600;margin-bottom:12px">Connected stores</p>
+        <div class="conn-air-connected-row">
+          <div class="conn-icon" style="background:#95bf47;color:white;width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">S</div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:500">Nörd Store</div><div style="font-size:11px;color:var(--content-subtle)">nord.myshopify.com</div></div>
+          <span style="font-size:11px;font-weight:600;color:var(--content-positive)">Connected</span>
+          <button style="background:none;border:none;font-size:14px;color:var(--content-subtle);cursor:pointer;padding:0 4px">×</button>
+        </div>
+        <div class="conn-air-connected-row">
+          <div class="conn-icon" style="background:#95bf47;color:white;width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">S</div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:500">Söuth Store</div><div style="font-size:11px;color:var(--content-subtle)">south.myshopify.com</div></div>
+          <span style="font-size:11px;font-weight:600;color:var(--content-positive)">Connected</span>
+          <button style="background:none;border:none;font-size:14px;color:var(--content-subtle);cursor:pointer;padding:0 4px">×</button>
+        </div>
+        <button class="btn-outline" style="width:100%;margin-top:4px">+ Connect another store</button>
+      </div>
+    </div>
+    <div class="conn-air-rpf">
+      <button class="btn-outline" onclick="closeConnAirRPanel()">Cancel</button>
+      <button class="btn-primary" id="connAirDoneBtn" onclick="markPlatformConnected()">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ CONNECTION AIR — BANKING MODAL ═══════════════ -->
+<div class="conn-air-modal" id="connAirBankingModal">
+  <div class="conn-air-left">
+    <div class="conn-air-inner">
+      <span class="conn-air-logo">wayflyer</span>
+      <h2 style="font-size:22px;font-weight:600;letter-spacing:-0.3px;margin-bottom:8px">Connect banking</h2>
+      <p style="font-size:14px;color:var(--content-subtle);margin-bottom:20px;line-height:1.5">Provide banking data for September 21, 2025 to March 21, 2026</p>
+      <div class="panel-info-box" style="margin-bottom:24px;display:flex;gap:10px;align-items:flex-start">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#1a56db" stroke-width="1.5" style="flex-shrink:0;margin-top:1px"><circle cx="8" cy="8" r="6"/><path d="M8 5v0M8 7v4"/></svg>
+        <div style="font-size:13px"><strong>We need 6 months of bank statements</strong><br>Connect via Plaid for instant access, or upload statements manually.</div>
+      </div>
+      <p style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.4px;color:var(--content-subtle);margin-bottom:12px">Banking</p>
+      <div class="conn-air-tiles" style="gap:12px">
+        <div class="conn-air-tile" id="banktile_plaid" style="width:140px;padding:20px 16px" onclick="openConnAirBankPlatform('plaid')">
+          <div style="width:40px;height:40px;border-radius:8px;background:#000;display:flex;align-items:center;justify-content:center">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="white"><rect x="4" y="4" width="3" height="3" rx="0.3"/><rect x="8.5" y="4" width="3" height="3" rx="0.3"/><rect x="2" y="8.5" width="3" height="3" rx="0.3"/><rect x="6.5" y="8.5" width="3" height="3" rx="0.3"/><rect x="11" y="8.5" width="3" height="3" rx="0.3"/><rect x="4" y="13" width="3" height="3" rx="0.3"/><rect x="8.5" y="13" width="3" height="3" rx="0.3"/></svg>
+          </div>
+          <span style="font-size:12px;font-weight:600;margin-top:4px">Connect via Plaid</span>
+          <span style="font-size:11px;color:var(--content-subtle)">Instant connection</span>
+        </div>
+        <div class="conn-air-tile" id="banktile_upload" style="width:140px;padding:20px 16px" onclick="openConnAirBankPlatform('upload')">
+          <div style="width:40px;height:40px;border-radius:8px;background:var(--bg-subtle);border:1px solid var(--border-subtle);display:flex;align-items:center;justify-content:center">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="var(--content-subtle)" stroke-width="1.5"><path d="M10 3v9M7 7l3-4 3 4M3 15v1a1 1 0 001 1h12a1 1 0 001-1v-1"/></svg>
+          </div>
+          <span style="font-size:12px;font-weight:600;margin-top:4px">Upload statements</span>
+          <span style="font-size:11px;color:var(--content-subtle)">PDF, CSV, or XLS</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;padding-top:24px;margin-top:16px;border-top:1px solid var(--border-subtle)">
+        <button class="btn-outline" onclick="closeConnAirModal()">Cancel</button>
+        <button class="btn-primary" style="margin-left:auto" onclick="submitConnAirBanking()">Done</button>
+      </div>
+    </div>
+  </div>
+  <!-- Right panel -->
+  <div class="conn-air-rpanel" id="connAirBankRPanel">
+    <div class="conn-air-rph">
+      <button class="panel-close" onclick="closeConnAirBankRPanel()">✕</button>
+      <h3 id="connAirBankRPanelTitle">Connect via Plaid</h3>
+    </div>
+    <div class="conn-air-rpb" id="connAirBankRPanelBody">
+      <div id="connAirBankPreConnect">
+        <p style="font-size:13px;color:var(--content-subtle);line-height:1.5;margin-bottom:20px">Plaid gives Wayflyer secure, read-only access to your bank transaction history. No login credentials are stored.</p>
+        <div class="conn-air-steps">
+          <div class="conn-air-step"><div class="conn-air-step-dot">1</div><div><strong>Click 'Connect bank' below</strong><br><span style="color:var(--content-subtle)">This opens the Plaid connection flow.</span></div></div>
+          <div class="conn-air-step"><div class="conn-air-step-dot">2</div><div><strong>Search for your bank</strong><br><span style="color:var(--content-subtle)">Select your bank and enter your credentials.</span></div></div>
+          <div class="conn-air-step"><div class="conn-air-step-dot">3</div><div><strong>Done!</strong><br><span style="color:var(--content-subtle)">Your data is securely shared with Wayflyer.</span></div></div>
+        </div>
+        <button class="btn-primary" style="width:100%;margin-top:8px" onclick="simulateBankConnect()">Connect bank</button>
+      </div>
+      <div id="connAirBankPostConnect" style="display:none">
+        <p style="font-size:13px;color:var(--content-subtle);margin-bottom:16px;line-height:1.5">Your bank account is connected. Wayflyer will pull the last 12 months of transactions.</p>
+        <p style="font-size:13px;font-weight:600;margin-bottom:8px">Connected accounts</p>
+        <div class="conn-air-connected-row">
+          <div style="width:28px;height:28px;border-radius:6px;background:#0052cc;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">C</div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:500">Chase Bank</div><div style="font-size:11px;color:var(--content-subtle)">Business checking · ••4821</div></div>
+          <span style="font-size:11px;font-weight:600;color:var(--content-positive)">Connected</span>
+        </div>
+      </div>
+    </div>
+    <div class="conn-air-rpf">
+      <button class="btn-outline" onclick="closeConnAirBankRPanel()">Cancel</button>
+      <button class="btn-primary" onclick="markBankConnected()">Done</button>
     </div>
   </div>
 </div>
@@ -2534,11 +2674,167 @@
   });
 
   function openTaskDemo(value) {
-    if (value === 'conn-air-sales' || value === 'conn-air-banking') {
-      switchPage(value);
-    } else if (value) {
-      openPanel(value);
+    if (value === 'conn-air-sales') { openConnAirModal('sales'); }
+    else if (value === 'conn-air-banking') { openConnAirModal('banking'); }
+    else if (value) { openPanel(value); }
+  }
+
+  // ── Connection AIR Modal ──
+  let connAirCurrentPlatform = null;
+
+  function openConnAirModal(type) {
+    closePanel();
+    if (type === 'sales') {
+      // Reset state
+      connAirCurrentPlatform = null;
+      document.querySelectorAll('#connAirSalesModal .conn-air-view').forEach(v => v.classList.remove('active'));
+      document.getElementById('connAirView_main').classList.add('active');
+      document.querySelectorAll('#connAirSalesModal .conn-air-tile').forEach(t => t.classList.remove('selected'));
+      document.getElementById('connAirRPanel').classList.remove('open');
+      document.getElementById('connAirPreConnect').style.display = '';
+      document.getElementById('connAirPostConnect').style.display = 'none';
+      document.getElementById('connAirSalesModal').classList.add('open');
+    } else {
+      connAirCurrentPlatform = null;
+      document.querySelectorAll('#connAirBankingModal .conn-air-tile').forEach(t => t.classList.remove('selected'));
+      document.getElementById('connAirBankRPanel').classList.remove('open');
+      document.getElementById('connAirBankPreConnect').style.display = '';
+      document.getElementById('connAirBankPostConnect').style.display = 'none';
+      document.getElementById('connAirBankingModal').classList.add('open');
     }
+  }
+
+  function closeConnAirModal() {
+    document.getElementById('connAirSalesModal').classList.remove('open');
+    document.getElementById('connAirBankingModal').classList.remove('open');
+  }
+
+  function showCantConnect() {
+    document.querySelectorAll('#connAirSalesModal .conn-air-view').forEach(v => v.classList.remove('active'));
+    document.getElementById('connAirView_cantconnect').classList.add('active');
+    document.getElementById('connAirRPanel').classList.remove('open');
+  }
+
+  function showConnAirMain() {
+    document.querySelectorAll('#connAirSalesModal .conn-air-view').forEach(v => v.classList.remove('active'));
+    document.getElementById('connAirView_main').classList.add('active');
+  }
+
+  function openConnAirPlatform(id, name) {
+    connAirCurrentPlatform = id;
+    document.querySelectorAll('#connAirSalesModal .conn-air-tile').forEach(t => t.classList.remove('selected'));
+    const tile = document.getElementById('tile_' + id);
+    if (tile) tile.classList.add('selected');
+    document.getElementById('connAirRPanelTitle').textContent = 'Connect ' + name;
+    document.getElementById('connAirPlatformNameInline').textContent = name;
+    document.querySelectorAll('.connAirPlatformNameInline2').forEach(el => el.textContent = name);
+    document.getElementById('connAirPreConnect').style.display = '';
+    document.getElementById('connAirPostConnect').style.display = 'none';
+    document.getElementById('connAirRPanel').classList.add('open');
+  }
+
+  function closeConnAirRPanel() {
+    document.getElementById('connAirRPanel').classList.remove('open');
+    document.querySelectorAll('#connAirSalesModal .conn-air-tile').forEach(t => t.classList.remove('selected'));
+    connAirCurrentPlatform = null;
+  }
+
+  function simulateConnect() {
+    document.getElementById('connAirPreConnect').style.display = 'none';
+    document.getElementById('connAirPostConnect').style.display = '';
+  }
+
+  function markPlatformConnected() {
+    if (connAirCurrentPlatform) {
+      const tile = document.getElementById('tile_' + connAirCurrentPlatform);
+      if (tile) { tile.classList.add('connected'); tile.classList.remove('selected'); }
+      if (connAirCurrentPlatform === 'shopify') {
+        const sub = document.getElementById('shopifyTileSub');
+        if (sub) sub.style.display = 'block';
+      }
+    }
+    closeConnAirRPanel();
+  }
+
+  function submitConnAirSales() {
+    closeConnAirModal();
+    resolveAirRow('sales');
+    switchPage('get-started');
+  }
+
+  function submitCantConnect() {
+    closeConnAirModal();
+    resolveAirRow('sales');
+    switchPage('get-started');
+  }
+
+  // Banking modal
+  function openConnAirBankPlatform(platform) {
+    connAirCurrentPlatform = platform;
+    document.querySelectorAll('#connAirBankingModal .conn-air-tile').forEach(t => t.classList.remove('selected'));
+    const tile = document.getElementById('banktile_' + platform);
+    if (tile) tile.classList.add('selected');
+    const titles = { plaid: 'Connect via Plaid', upload: 'Upload statements' };
+    document.getElementById('connAirBankRPanelTitle').textContent = titles[platform] || 'Connect banking';
+    if (platform === 'upload') {
+      document.getElementById('connAirBankPreConnect').innerHTML = `
+        <p style="font-size:13px;color:var(--content-subtle);line-height:1.5;margin-bottom:20px">Upload PDF, CSV, or XLS bank statements for all business accounts covering the required period.</p>
+        <div style="border:2px dashed var(--border-subtle);border-radius:10px;padding:32px;text-align:center;cursor:pointer;margin-bottom:16px" onmouseover="this.style.borderColor='var(--content-accent)'" onmouseout="this.style.borderColor='var(--border-subtle)'">
+          <div style="font-size:24px;margin-bottom:8px">📤</div>
+          <div style="font-size:13px;font-weight:500">Drop files here or click to browse</div>
+          <div style="font-size:11px;color:var(--content-subtle);margin-top:4px">PDF, CSV, or XLS · Max 20MB per file</div>
+        </div>
+        <button class="btn-primary" style="width:100%" onclick="simulateBankConnect()">Upload &amp; continue</button>`;
+    } else {
+      document.getElementById('connAirBankPreConnect').innerHTML = `
+        <p style="font-size:13px;color:var(--content-subtle);line-height:1.5;margin-bottom:20px">Plaid gives Wayflyer secure, read-only access to your bank transaction history. No login credentials are stored.</p>
+        <div class="conn-air-steps">
+          <div class="conn-air-step"><div class="conn-air-step-dot">1</div><div><strong>Click 'Connect bank' below</strong><br><span style="color:var(--content-subtle)">This opens the Plaid connection flow.</span></div></div>
+          <div class="conn-air-step"><div class="conn-air-step-dot">2</div><div><strong>Search for your bank</strong><br><span style="color:var(--content-subtle)">Select your bank and enter your credentials.</span></div></div>
+          <div class="conn-air-step"><div class="conn-air-step-dot">3</div><div><strong>Done!</strong><br><span style="color:var(--content-subtle)">Your data is securely shared with Wayflyer.</span></div></div>
+        </div>
+        <button class="btn-primary" style="width:100%;margin-top:8px" onclick="simulateBankConnect()">Connect bank</button>`;
+    }
+    document.getElementById('connAirBankPreConnect').style.display = '';
+    document.getElementById('connAirBankPostConnect').style.display = 'none';
+    document.getElementById('connAirBankRPanel').classList.add('open');
+  }
+
+  function closeConnAirBankRPanel() {
+    document.getElementById('connAirBankRPanel').classList.remove('open');
+    document.querySelectorAll('#connAirBankingModal .conn-air-tile').forEach(t => t.classList.remove('selected'));
+    connAirCurrentPlatform = null;
+  }
+
+  function simulateBankConnect() {
+    document.getElementById('connAirBankPreConnect').style.display = 'none';
+    document.getElementById('connAirBankPostConnect').style.display = '';
+  }
+
+  function markBankConnected() {
+    if (connAirCurrentPlatform) {
+      const tile = document.getElementById('banktile_' + connAirCurrentPlatform);
+      if (tile) { tile.classList.add('connected'); tile.classList.remove('selected'); }
+    }
+    closeConnAirBankRPanel();
+  }
+
+  function submitConnAirBanking() {
+    closeConnAirModal();
+    resolveAirRow('banking');
+    switchPage('get-started');
+  }
+
+  function resolveAirRow(type) {
+    const badgeId = type === 'sales' ? 'airBadgeSales' : 'airBadgeBanking';
+    const rowId = type === 'sales' ? 'airRowSales' : 'airRowBanking';
+    const resolveId = type === 'sales' ? 'resolveBtnSales' : 'resolveBtnBanking';
+    const badge = document.getElementById(badgeId);
+    if (badge) { badge.textContent = 'In review'; badge.className = 'action-badge'; badge.style.background = '#e8f0fe'; badge.style.color = '#1a56db'; }
+    const row = document.getElementById(rowId);
+    if (row) { row.onclick = null; row.style.cursor = 'default'; }
+    const btn = document.getElementById(resolveId);
+    if (btn) btn.style.display = 'none';
   }
 
   function openPanel(panelId) {
